@@ -1,0 +1,25 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Listing</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include("partials/navbar") %>
+    <main class="container">
+        <section class="form-card">
+            <h2>Create a new listing</h2>
+            <form method="POST" action="/listing">
+                <input type="text" name="Listing[title]" placeholder="enter title" required>
+               <textarea name="Listing[description]" ></textarea>
+                <input type="text" name="Listing[image]" placeholder="enter image" required>
+                <input type="number" name="Listing[price]" placeholder="enter price" required>
+                <input type="text" name="Listing[location]" placeholder="enter location" required>
+                <input type="text" name="Listing[country]" placeholder="enter country" required>
+                <button>Add listing</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

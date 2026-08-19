@@ -2,10 +2,18 @@ const express = require("express")
 const mongoose = require("mongoose")
 const listing = require("./models/listing.js")
 const app = express();
-const path  = require("path")
+const path  = require("path");
+const methodOverride = require("method-override")
+const ejsMate=require("ejs-mate")
+
+
+app.use(express.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs");
 app.set("views",path.join(__dirname,"/views"));
+app.use(methodOverride("_method"))
+app.engine('ejs',ejsMate)
+app.use(express.static(path.join(__dirname,"public")))
 
 port = 8080;
 
@@ -22,7 +30,7 @@ async function main(){
 }
 
 app.get("/", (req,res)=>{
-    res.send("Im am root")
+    res.render("home.ejs")
 })
 
 // app.get("/testlisting",async(req,res)=>{
@@ -47,10 +55,49 @@ app.get("/listing", async(req, res)=>{
    
 })
 
-//Show route
-app.get("/listing/:id",(req,res)=>{
-    res.send("show")
+
+//Create new route
+app.get("/listing/new", (req,res)=>{
+    res.render("new.ejs")
 })
+
+//Post(Create) route
+app.post("/listing", async(req,res)=>{
+    let Listing = new listing(req.body.Listing);
+    await Listing.save();
+    
+    res.redirect("/listing")
+})
+
+//Edit route
+app.get("/listing/:id/edit", async(req,res)=>{
+    let {id} = req.params;
+    const list = await listing.findById(id)
+    res.render("edit.ejs", {list})
+})
+
+app.put("/listing/:id",async(req,res)=>{
+    let {id}=req.params;
+    await listing.findByIdAndUpdate(id,{...req.body.Listing});
+    res.redirect(`/listing/${id}`)
+
+})
+
+//dELETE ROUTE
+app.delete("/listing/:id",async(req,res)=>{
+    let {id}=req.params;
+    await listing.findByIdAndDelete(id)
+    res.redirect(`/listing`)
+    
+})
+
+//Show route
+app.get("/listing/:id",async(req,res)=>{
+    let {id} = req.params;
+    const list = await listing.findById(id)
+    res.render("show.ejs", {list})
+})
+
 
 app.listen(port, ()=>{
     console.log(`Server listening on ${port}`)

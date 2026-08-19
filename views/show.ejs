@@ -3,15 +3,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Show</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h2>Showing all listings</h2>
-    <ul>
-        <li><%= listing.title %></li>
-        <li><%= listing.description %></li>
-        <li><%= listing.price %></li>
-        <li><%= listing.location %></li>
-        <li><%= listing.country %></li>
-    </ul>    
+    <%- include("partials/navbar") %>
+    <main class="container">
+        <article class="detail-card">
+            <img src="<%= list.image %>" alt="<%= list.title %>">
+            <h2><%= list.title %></h2>
+            <p class="muted"><%= list.location %>, <%= list.country %></p>
+            <ul>
+                <li><%= list.description %></li>
+                <li>₹<%= list.price.toLocaleString("en-in") %> per night</li>
+            </ul>
+            <div class="actions">
+                <a href="/listing/<%= list._id %>/edit"><button>Edit this listing</button></a>
+                <form method="POST" action="/listing/<%= list._id %>?_method=DELETE" onsubmit="return confirm('Are you sure you want to delete this listing?')">
+                    <button class="danger">Delete</button>
+                </form>
+            </div>
+        </article>
+    </main>
 </body>
 </html>

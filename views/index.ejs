@@ -1,17 +1,35 @@
-<html lang="en">
+<!-- <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>lISTINGS</title>
-</head>
+</head> -->
+<% layout("/layouts/boilerplate") %>
 <body>
 
-    <h2>All Listings</h2>
-    <%for(let listing of allListings){%>
-    <div>
-        <p><a href="/listing/<%=listing._id%>"><%= listing.title %></a></p>
+    <div class="page-heading">
+        <div>
+            <p class="muted">Find your next stay</p>
+            <h2>Explore all listings</h2>
+        </div>
+        <form method="GET" action="/listing/new">
+            <button>Create New</button>
+        </form>
     </div>
+    <section class="listing-grid">
+    <%for(let listing of allListings){%>
+    <article class="listing-card">
+        <a href="/listing/<%=listing._id%>">
+            <img src="<%= listing.image %>" alt="<%= listing.title %>">
+            <div class="listing-card-content">
+                <h3><%= listing.title %></h3>
+                <p><%= listing.location %>, <%= listing.country %></p>
+                <strong>₹<%= listing.price.toLocaleString("en-in") %> night</strong>
+            </div>
+        </a>
+    </article>
 <% } %>
+    </section>
     
 </body>
 </html>
